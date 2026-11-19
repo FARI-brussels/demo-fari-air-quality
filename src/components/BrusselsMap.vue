@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import * as L from 'leaflet'
+import { addBasemap } from '@/utils/basemap'
 import * as turf from '@turf/turf'
 import { getColor } from '../utils/colorMap'
 import type { ColorThreshold } from '@/types/Color'
@@ -30,15 +31,7 @@ function initializeMap() {
     12,
   )
 
-  L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-    {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      subdomains: 'abcd',
-      maxZoom: 19,
-      minZoom: 12,
-    },
-  ).addTo(map.value)
+  addBasemap(map.value as L.Map, { minZoom: 12 })
 }
 
 onMounted(() => {

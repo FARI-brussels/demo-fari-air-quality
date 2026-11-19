@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import * as L from 'leaflet'
+import { addBasemap } from '@/utils/basemap'
 import * as turf from '@turf/turf'
 import { getColor } from '../utils/colorMap'
 import type { ColorThreshold } from '@/types/Color'
@@ -28,15 +29,7 @@ function initializeMap() {
     12,
   )
 
-  L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-    {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      subdomains: 'abcd',
-      maxZoom: 19,
-      minZoom: 12,
-    },
-  ).addTo(map.value)
+  addBasemap(map.value as L.Map, { minZoom: 12 })
 }
 
 onMounted(() => {
@@ -113,6 +106,8 @@ function updateMarkers({
     .map(marker => {
       const { value } = marker
       const color = getColor(value, colors)
+      console.log({ value: marker.value, colors, color })
+
       return {
         lat: marker.lat,
         lon: marker.lon,
@@ -150,7 +145,6 @@ function renderMarkersOnMap({
     const isStarLocation = config.lat === 50.845813 && config.lon === 4.3579312
 
     if (isStarLocation) {
-      console.log(isStarLocation)
       const svgHtml = `
       <svg
         width="24"

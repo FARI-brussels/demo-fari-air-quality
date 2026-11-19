@@ -227,6 +227,7 @@ const thresholdsMap = computed(() => ({
 
 const selectedThresholds = computed(() => {
   const normValue = norm.value ?? 'null'
+  console.log({ normValue })
   return thresholdsMap.value[normValue] ?? thresholdsP2
 })
 
